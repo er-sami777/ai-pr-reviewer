@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  ai-pr-reviewer:
+    build: .
+    container_name: ai-pr-reviewer-api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./coding_standards.md:/app/coding_standards.md:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
